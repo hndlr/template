@@ -1,1 +1,29 @@
-# error-template
+# Error
+
+Template generator for [Erred](http://github.com/harrytwright/erred)
+
+## Installation
+
+```bash
+$ npm install -dev @harrytwright/error-template
+```
+
+## Quick Start
+
+> Due to being built purely to be called `./node_modules/.bin` this will not add the dependencies
+
+Create the src:
+
+```bash
+$ ./node_modules/.bin/error build
+```
+
+## Commands
+
+```bash
+  help      Display help information about error. 
+  build     Build the src files for error         
+  version   Print the version.                    
+  codes     Log error codes we are using    
+```
+
