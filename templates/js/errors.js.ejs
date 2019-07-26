@@ -1,0 +1,64 @@
+const Status = require('http-status-codes');
+<%_
+function between(x, min, max) {
+    return x >= min && x <= max;
+}
+_%>
+
+export class AnyHTTPError extends Error {
+
+    get status() {
+        return this._statusCode;
+    }
+
+    set status(value) {
+        this._statusCode = value;
+    }
+
+    constructor(message, status) {
+        super(message);
+
+        this.status = status;
+        this.name = Status.getStatusText(status);
+    }
+
+}
+
+<% errors.forEach(function (error) { -%>
+export class <%- error.klass %> extends AnyHTTPError {
+    <% if (error.status === 422 || error.status === 409 || error.status === 500) { -%>
+    get underlyingError() {
+        return this._underlyingError;
+    }
+    <% } else if (between(error.status, 300, 303) || between(error.status, 307, 308) || error.status === 305) { -%>
+    get redirectURL() {
+        return this._redirectURL;
+    }
+    <% } -%>
+
+    <% if (error.status === 422 || error.status === 409 || error.status === 500) { -%>
+    constructor(message, underlyingError) {
+        super(message, <%- error.status %>);
+
+        if (underlyingError !== null) {
+            this._underlyingError = underlyingError;
+        }
+    }
+    <% } else if (between(error.status, 300, 303) || between(error.status, 307, 308) || error.status === 305) { -%>
+    constructor(url) {
+        super(Status.getStatusText(<%- error.status %>), <%- error.status %>);
+
+        this._redirectURL = url;
+    }
+    <% } else if (between(error.status, 204, 205) || error.status === 304) { -%>
+    constructor() {
+        super(Status.getStatusText(<%- error.status %>), <%- error.status %>);
+    }
+    <% } else { -%>
+    constructor(message) {
+        super(message, <%- error.status %>);
+    }
+    <% } -%>
+
+}
+<% }); %>

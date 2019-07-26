@@ -1,0 +1,97 @@
+{
+	"name": "@harrytwright/error-template",
+	"version": "1.0.0",
+	"description": "CLI to template all the error codes to error objects",
+	"keywords": [
+		"cli"
+	],
+	"license": "MIT",
+	"author": "Harry Wright",
+	"main": "./bin/error-cli.js",
+	"bin": {
+		"error": "./bin/error-cli.js"
+	},
+	"scripts": {
+      "lint": "eslint lib --fix && eslint bin/error-cli.js --fix",
+      "test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"preferGlobal": true,
+	"directories": {
+		"bin": "./bin",
+		"lib": "./lib"
+	},
+	"dependencies": {
+		"command-line-args": "^5.1.1",
+		"command-line-usage": "^6.0.2",
+		"ejs": "^2.6.1",
+		"lodash": "^4.17.11",
+		"minimatch": "latest",
+		"mkdirp": "^0.5.1",
+		"statuses": "^1.5.0"
+	},
+	"devDependencies": {
+		"eslint": "^5.12.1",
+		"eslint-plugin-import": "^2.18.2"
+	},
+	"eslintConfig": {
+		"extends": [
+			"eslint:recommended"
+		],
+		"parserOptions": {
+			"ecmaVersion": 2015
+		},
+		"env": {
+			"node": true,
+			"es6": true
+		},
+		"plugins": [
+			"import"
+		],
+		"rules": {
+			"comma-style": "error",
+			"consistent-this": [
+				"error",
+				"_this"
+			],
+			"indent": [
+				"error",
+				2,
+				{
+					"SwitchCase": 1,
+					"VariableDeclarator": 2
+				}
+			],
+			"keyword-spacing": "error",
+			"no-buffer-constructor": "warn",
+			"no-console": "off",
+			"no-multi-spaces": "error",
+			"func-call-spacing": "error",
+			"no-trailing-spaces": "error",
+			"quotes": [
+				"error",
+				"single"
+			],
+			"semi": "error",
+			"space-before-blocks": "error",
+			"space-before-function-paren": [
+				"error",
+				"never"
+			],
+			"space-infix-ops": "error",
+			"space-unary-ops": "error",
+			"no-var": "warn",
+			"prefer-const": "warn",
+			"strict": [
+				"error",
+				"global"
+			],
+			"no-restricted-globals": [
+				"error",
+				{
+					"name": "context",
+					"message": "Don't use Mocha's global context"
+				}
+			]
+		}
+	}
+}
