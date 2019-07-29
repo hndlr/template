@@ -1,3 +1,5 @@
+'use strict';
+
 const handler = require('./handler');
 const error = require('./errors');
 

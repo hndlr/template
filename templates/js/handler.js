@@ -1,7 +1,9 @@
+'use strict';
+
 const _ = require('statuses');
 const Status = require('http-status-codes');
 
-const { UnprocessableEntity, InternalServerError, Conflict } = require('./error');
+const { UnprocessableEntity, InternalServerError, Conflict } = require('./errors');
 
 function breakdownErrorToObject(error) {
   if (process.env.NODE_ENV === 'production' && error.name === 'MongoError') {

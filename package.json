@@ -1,6 +1,6 @@
 {
 	"name": "@harrytwright/error-template",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"description": "CLI to template all the error codes to error objects",
 	"keywords": [
 		"cli"
@@ -61,6 +61,14 @@
 					"VariableDeclarator": 2
 				}
 			],
+			"import/order": [
+				"error",
+				{
+					"newlines-between": "always-and-inside-groups"
+				}
+			],
+			"import/first": "error",
+			"import/newline-after-import": "warn",
 			"keyword-spacing": "error",
 			"no-buffer-constructor": "warn",
 			"no-console": "off",

@@ -8,7 +8,6 @@ const help = require('command-line-usage');
 const build = require('../lib/build');
 const codes = require('../lib/codes');
 const version = require('../lib/version');
-
 const { commands, usage } = require('../lib/config/commands');
 
 const _exit = process.exit;
