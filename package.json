@@ -7,26 +7,27 @@
 	],
 	"license": "MIT",
 	"author": "Harry Wright",
-	"main": "./bin/error-cli.js",
+	"main": "./lib/build.js",
 	"bin": {
 		"error": "./bin/error-cli.js"
 	},
 	"scripts": {
-      "lint": "eslint lib --fix && eslint bin/error-cli.js --fix",
-      "test": "echo \"Error: no test specified\" && exit 1"
+		"lint": "eslint src --fix && eslint bin/error.js --fix"
 	},
 	"preferGlobal": true,
 	"directories": {
 		"bin": "./bin",
-		"lib": "./lib"
+		"lib": "./lib",
+		"templates": "./templates"
 	},
 	"dependencies": {
-		"command-line-args": "^5.1.1",
-		"command-line-usage": "^6.0.2",
+		"@harrytwright/cli-config": "^1.1.0",
+		"abbrev": "^1.1.1",
 		"ejs": "^2.6.1",
 		"lodash": "^4.17.11",
 		"minimatch": "latest",
 		"mkdirp": "^0.5.1",
+		"nopt": "^4.0.1",
 		"statuses": "^1.5.0"
 	},
 	"devDependencies": {
