@@ -21,9 +21,9 @@ $ ./node_modules/.bin/error build
 ## Commands
 
 ```bash
-  help      Display help information about error. 
-  build     Build the src files for error         
-  version   Print the version.                    
-  codes     Log error codes we are using    
+  build     Build the src files for error
+  codes     Log error codes we are using
+  help      Display help information about error.
+  version   Print the version.
 ```
 
