@@ -1,6 +1,6 @@
 {
 	"name": "@harrytwright/error-template",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"description": "CLI to template all the error codes to error objects",
 	"keywords": [
 		"cli"
@@ -12,7 +12,7 @@
 		"error": "./bin/error-cli.js"
 	},
 	"scripts": {
-		"lint": "eslint src --fix && eslint bin/error.js --fix"
+		"lint": "eslint lib --fix && eslint bin/error-cli.js --fix"
 	},
 	"preferGlobal": true,
 	"directories": {
@@ -21,13 +21,11 @@
 		"templates": "./templates"
 	},
 	"dependencies": {
-		"@harrytwright/cli-config": "^1.1.0",
+		"@harrytwright/cli-config": "^1.1.1",
 		"abbrev": "^1.1.1",
 		"ejs": "^2.6.1",
 		"lodash": "^4.17.11",
-		"minimatch": "latest",
 		"mkdirp": "^0.5.1",
-		"nopt": "^4.0.1",
 		"statuses": "^1.5.0"
 	},
 	"devDependencies": {
