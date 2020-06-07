@@ -5,8 +5,12 @@ const Status = require('http-status-codes');
 
 const { UnprocessableEntity, InternalServerError, Conflict } = require('./errors');
 
+function isProduction() {
+  return process.env.NODE_ENV === 'production';
+}
+
 function breakdownErrorToObject(error) {
-  if (process.env.NODE_ENV === 'production' && error.name === 'MongoError') {
+  if (isProduction() && error.name === 'MongoError') {
     return {
       message: error.message
     };
@@ -22,28 +26,25 @@ function breakdownErrorToObject(error) {
     };
   }
 
-  if (error.name === 'CastError') {
-    if (error.model) {
-      return {
-        property: error.path,
-        message: error.message,
-        meta: {
-          value: error.value,
-          kind: error.kind,
-          model: error.model.collection.collectionName
-        }
-      };
-    } else {
-      return {
-        property: error.path,
-        message: error.message || error.reason || 'Cast Error',
-        meta: {
-          value: error.stringValue || error.value,
-          kind: error.kind,
-        },
-        status: 503
+  if (error.name === 'CastError' && error.model) {
+    return {
+      property: error.path,
+      message: error.message,
+      meta: {
+        value: error.value,
+        kind: error.kind,
+        model: error.model.collection.collectionName
       }
-    }
+    };
+  } else if (error.name === 'CastError') {
+    return {
+      property: error.path,
+      message: error.message,
+      meta: {
+        value: error.stringValue || error.value,
+        kind: error.kind,
+      }
+    };
   }
 
   if (Array.isArray(error)) {
@@ -63,17 +64,22 @@ module.exports = (err, req, res, next) => {
     return res.status(err.status).end();
   }
 
-  // console.log(err);
-  if (err.name === 'CastError') {
-    // err.model.collection.collectionName
-    err = new UnprocessableEntity('Malformed Request Body', err);
+  if (_.redirect[err.status]) {
+    return res.status(err.status).redirect(err.redirectURL);
   }
 
+  if (err.name === 'CastError' && err.model) {
+    err = new UnprocessableEntity('Malformed Request Body', err);
+  } else if (err.name === 'CastError') {
+    err = new InternalServerError('Cast Error', err);
+  }
+
+  const message = 'The request could not be completed due to a conflict with the current state of the target resource.';
   if (err.name === 'MongoError') {
     switch (err.code) {
       case 11000:
         // eslint-disable-next-line max-len
-        err = new Conflict('The request could not be completed due to a conflict with the current state of the target resource.', err);
+        err = new Conflict(message, err);
         break;
       default:
         break;
@@ -101,6 +107,10 @@ module.exports = (err, req, res, next) => {
   const errorObject = breakdownErrorToObject(err);
   if (err.underlyingError) {
     errorObject.underlyingError = breakdownErrorToObject(err.underlyingError);
+  }
+
+  if (err.name === 'TypeError') {
+    errorObject.stack = err.stack;
   }
 
   return res.status(err.status || 500).json({
