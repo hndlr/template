@@ -23,15 +23,27 @@ function breakdownErrorToObject(error) {
   }
 
   if (error.name === 'CastError') {
-    return {
-      property: error.path,
-      message: error.message,
-      meta: {
-        value: error.value,
-        kind: error.kind,
-        model: error.model.collection.collectionName
+    if (error.model) {
+      return {
+        property: error.path,
+        message: error.message,
+        meta: {
+          value: error.value,
+          kind: error.kind,
+          model: error.model.collection.collectionName
+        }
+      };
+    } else {
+      return {
+        property: error.path,
+        message: error.message || error.reason || 'Cast Error',
+        meta: {
+          value: error.stringValue || error.value,
+          kind: error.kind,
+        },
+        status: 503
       }
-    };
+    }
   }
 
   if (Array.isArray(error)) {
