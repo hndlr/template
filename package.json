@@ -29,8 +29,10 @@
 		"statuses": "^2.0.0"
 	},
 	"devDependencies": {
+		"babel-eslint": "^10.1.0",
 		"eslint": "^7.9.0",
-		"eslint-plugin-import": "^2.22.0"
+		"eslint-plugin-import": "^2.22.0",
+		"http-status-codes": "^2.1.4"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -39,6 +41,7 @@
 		"parserOptions": {
 			"ecmaVersion": 2015
 		},
+		"parser": "babel-eslint",
 		"env": {
 			"node": true,
 			"es6": true
