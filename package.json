@@ -21,16 +21,16 @@
 		"templates": "./templates"
 	},
 	"dependencies": {
-		"@harrytwright/cli-config": "^1.1.1",
+		"@harrytwright/cli-config": "^1.2.0",
 		"abbrev": "^1.1.1",
-		"ejs": "^3.1.3",
-		"lodash": "^4.17.11",
+		"ejs": "^3.1.5",
+		"lodash": "^4.17.20",
 		"mkdirp": "^1.0.4",
 		"statuses": "^2.0.0"
 	},
 	"devDependencies": {
-		"eslint": "^7.2.0",
-		"eslint-plugin-import": "^2.20.2"
+		"eslint": "^7.9.0",
+		"eslint-plugin-import": "^2.22.0"
 	},
 	"eslintConfig": {
 		"extends": [
