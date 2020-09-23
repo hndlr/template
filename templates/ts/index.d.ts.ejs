@@ -1,0 +1,35 @@
+<%_
+function between(x, min, max) {
+    return x >= min && x <= max;
+}
+_%>
+
+export = errors;
+
+declare namespace errors {
+    export class AnyHTTPError extends Error {
+    status: number
+    name: string
+
+    constructor(message: string, status: number)
+    }
+
+    <% errors.forEach(function (error) { -%>
+    export class <%- error.klass %> extends AnyHTTPError {
+
+    <% if (error.status === 422 || error.status === 409 || error.status === 500) { -%>
+    underlyingError?: Error|Array<Error>
+
+    constructor(message: string, underlyingError?: Error|Array<Error>)
+    <% } else if (between(error.status, 300, 303) || between(error.status, 307, 308) || error.status === 305) { -%>
+    redirectURL: string
+
+    constructor(url: string)
+    <% } else if (between(error.status, 204, 205) || error.status === 304 || error.status === 418) { -%>
+    constructor()
+    <% } else { -%>
+    constructor(message: string)
+    <% } -%>
+    }
+    <% }); %>
+}

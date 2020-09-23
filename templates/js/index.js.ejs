@@ -1,73 +1,39 @@
+/**
+ * @fileoverview The HTTPError classes
+ * @author Harry Wright
+ */
+
 const Status = require('http-status-codes');
 
-const errors = module.exports = {}
 <%_
 function between(x, min, max) {
     return x >= min && x <= max;
 }
 _%>
 
-/**
- * @extends Error
- * */
-class AnyHTTPError extends Error {
+export class AnyHTTPError extends Error {
 
-    /**
-     * @param {string} message - Error message
-     * @param {number} status - HTTPStatus code
-     * */
     constructor(message, status) {
         super(message);
 
-        /**
-         * HTTPStatus code
-         * @type {number}
-         * */
         this.status = status;
 
-
-        /**
-         * HTTPStatus code converted to string
-         * @type {string}
-         * */
         this.name = Status.getReasonPhrase(status);
     }
 
 }
 
-errors.AnyHTTPError = AnyHTTPError;
-
 <% errors.forEach(function (error) { -%>
-/**
- * @extends AnyHTTPError
- * */
-class <%- error.klass %> extends AnyHTTPError {
+export class <%- error.klass %> extends AnyHTTPError {
 
     <% if (error.status === 422 || error.status === 409 || error.status === 500) { -%>
-    /**
-     * @param {string} message - Error message
-     * @param {Error|Error[]|undefined} underlyingError - An underlying error for the HTTPError
-     * */
     constructor(message, underlyingError = null) {
         super(message, <%- error.status %>);
-
-        /**
-         * An underlying error for the HTTPError
-         * @type {Error|Error[]|undefined}
-         * */
         this.underlyingError = underlyingError;
     }
     <% } else if (between(error.status, 300, 303) || between(error.status, 307, 308) || error.status === 305) { -%>
-    /**
-     * @param {string} url - A URL to redirect too
-     * */
     constructor(url) {
         super(Status.getReasonPhrase(<%- error.status %>), <%- error.status %>);
-
-        /**
-         * A URL to redirect too
-         * @type {string}
-         * */
         this.redirectURL = url;
     }
     <% } else if (between(error.status, 204, 205) || error.status === 304 || error.status === 418) { -%>
@@ -75,14 +41,10 @@ class <%- error.klass %> extends AnyHTTPError {
         super(Status.getReasonPhrase(<%- error.status %>), <%- error.status %>);
     }
     <% } else { -%>
-    /**
-     * @param {string} message - Error message
-     * */
     constructor(message) {
         super(message, <%- error.status %>);
     }
     <% } -%>
 
 }
-errors.<%- error.klass %> = <%- error.klass %>
 <% }); %>
