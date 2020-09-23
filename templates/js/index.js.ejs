@@ -24,7 +24,7 @@ export class HTTPError extends Error {
 }
 
 <% errors.forEach(function (error) { -%>
-export class <%- error.klass %> extends AnyHTTPError {
+export class <%- error.klass %> extends HTTPError {
 
     <% if (error.status === 422 || error.status === 409 || error.status === 500) { -%>
     constructor(message, underlyingError = null) {
