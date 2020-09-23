@@ -7,29 +7,32 @@ _%>
 export = errors;
 
 declare namespace errors {
-    export class AnyHTTPError extends Error {
-    status: number
-    name: string
 
-    constructor(message: string, status: number)
+    export type AnyHTTPError = HTTPError | <%- errors.map((error) => error.klass).join(" | ") %>
+
+    export class HTTPError extends Error {
+        status: number
+        name: string
+
+        constructor(message: string, status: number)
     }
 
-    <% errors.forEach(function (error) { -%>
-    export class <%- error.klass %> extends AnyHTTPError {
+<% errors.forEach(function (error) { -%>
+    export class <%- error.klass %> extends HTTPError {
 
-    <% if (error.status === 422 || error.status === 409 || error.status === 500) { -%>
-    underlyingError?: Error|Array<Error>
+<% if (error.status === 422 || error.status === 409 || error.status === 500) { -%>
+        underlyingError?: Error|Array<Error>
 
-    constructor(message: string, underlyingError?: Error|Array<Error>)
-    <% } else if (between(error.status, 300, 303) || between(error.status, 307, 308) || error.status === 305) { -%>
-    redirectURL: string
+        constructor(message: string, underlyingError?: Error|Array<Error>)
+<% } else if (between(error.status, 300, 303) || between(error.status, 307, 308) || error.status === 305) { -%>
+        redirectURL: string
 
-    constructor(url: string)
-    <% } else if (between(error.status, 204, 205) || error.status === 304 || error.status === 418) { -%>
-    constructor()
-    <% } else { -%>
-    constructor(message: string)
-    <% } -%>
+        constructor(url: string)
+<% } else if (between(error.status, 204, 205) || error.status === 304 || error.status === 418) { -%>
+        constructor()
+<% } else { -%>
+        constructor(message: string)
+<% } -%>
     }
-    <% }); %>
+<% }); %>
 }
