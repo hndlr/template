@@ -32,7 +32,8 @@
 		"ejs": "^3.1.5",
 		"lodash": "^4.17.20",
 		"mkdirp": "^1.0.4",
-		"statuses": "^2.0.0"
+		"statuses": "^2.0.0",
+		"http-status-codes": "^2.1.4"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.7.7",
